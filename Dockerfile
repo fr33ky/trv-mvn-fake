@@ -28,7 +28,8 @@ COPY --from=openssl rootCA.crt /usr/share/nginx/html/
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 USER root
-RUN chown nginx:root /etc/nginx/certs/cert.*
+RUN chmod 644 /etc/nginx/certs/cert.key \
+&&  chown nginx:root /etc/nginx/certs/cert.*
 USER nginx
 
 EXPOSE 8080/tcp
