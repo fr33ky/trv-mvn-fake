@@ -21,7 +21,7 @@ RUN apk add --no-cache openssl~=1.1 \
       -extensions req_ext \
       -extfile ssl.conf
 
-FROM nginxinc/nginx-unprivileged:1.20.1-alpine
+FROM nginxinc/nginx-unprivileged:1.20.2-alpine
 
 COPY --from=openssl cert.key cert.pem /etc/nginx/certs/
 COPY --from=openssl rootCA.crt /usr/share/nginx/html/
