@@ -1,4 +1,4 @@
-FROM alpine:3.12.7 AS openssl
+FROM alpine:3.15.0 AS openssl
 
 WORKDIR /
 COPY ssl.conf ssl.conf
