@@ -1,4 +1,4 @@
-FROM alpine:3.12.7 AS openssl
+FROM alpine:3.15.0 AS openssl
 
 WORKDIR /
 COPY ssl.conf ssl.conf
@@ -21,15 +21,16 @@ RUN apk add --no-cache openssl~=1.1 \
       -extensions req_ext \
       -extfile ssl.conf
 
-FROM nginxinc/nginx-unprivileged:1.20.1-alpine
+FROM nginxinc/nginx-unprivileged:1.20.2-alpine
 
 COPY --from=openssl cert.key cert.pem /etc/nginx/certs/
 COPY --from=openssl rootCA.crt /usr/share/nginx/html/
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
 USER root
-RUN chown nginx:root /etc/nginx/certs/cert.*
+RUN chmod 644 /etc/nginx/certs/cert.key \
+&&  chown nginx:root /etc/nginx/certs/cert.*
 USER nginx
 
-EXPOSE 8080/tcp
-EXPOSE 4443/tcp
+EXPOSE 80/tcp
+EXPOSE 443/tcp
